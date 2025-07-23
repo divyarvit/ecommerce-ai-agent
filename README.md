@@ -137,11 +137,7 @@ data: {"final_response": {"response": "Your total revenue is $1,004,904.56", "sq
 - Optimized for horizontal scaling
 
 
-```env
-DATABASE_URL=postgresql://user:pass@host:port/dbname
-GEMINI_API_KEY=your_gemini_api_key
-SESSION_SECRET=your_secret_key
-```
+
 
 ##  Sample Insights
 
