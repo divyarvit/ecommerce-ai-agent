@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Data Intelligence | E-commerce Agent</title>
+    
+    <!-- Core Stylesheets -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Visualization -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glow-blue: 0 0 30px rgba(102, 126, 234, 0.3);
+            --glow-purple: 0 0 30px rgba(118, 75, 162, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Advanced Cursor Effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(240, 147, 251, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(1deg) scale(1.02); }
+        }
+
+        /* Glass Morphism Header */
+        .hero-header {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--glow-blue);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-title {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            animation: expandLine 2s ease-out 0.5s both;
+        }
+
+        @keyframes expandLine {
+            0% { width: 0; }
+            100% { width: 100px; }
+        }
+
+        .hero-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-purple);
+            border-color: rgba(118, 75, 162, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--success-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: var(--glow-blue);
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            animation: messageSlideIn 0.5s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message.user-message {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            max-width: 80%;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-message .message-content {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .assistant-message .message-content {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: var(--glass-border);
+        }
+
+        /* Input Section */
+        .input-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--glow-purple);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: var(--glow-blue);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Example Questions */
+        .example-questions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .example-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            text-align: center;
+        }
+
+        .example-btn:hover {
+            background: var(--secondary-gradient);
+            color: white;
+            transform: translateY(-3px) rotateX(5deg);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.4);
+        }
+
+        /* Pulse Animation for Interactive Elements */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+
+        .btn-primary {
+            animation: pulse 2s infinite;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100% { content: ''; }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--glow-purple);
+            border-color: rgba(240, 147, 251, 0.4);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Hero Header -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div class="hero-header">
+                    <h1 class="hero-title">
+                        <i class="bi bi-robot me-3"></i>
+                        AI Data Intelligence
+                    </h1>
+                    <p class="hero-subtitle">
+                        Advanced E-commerce Analytics with Natural Language Processing
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Intelligence Features -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="features-grid fade-in-up" style="animation-delay: 0.5s">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <h4>Instant Analysis</h4>
+                        <p>Get immediate insights from your data with natural language queries</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h4>Visual Intelligence</h4>
+                        <p>Interactive charts and graphs generated automatically for your data</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                        <h4>AI-Powered</h4>
+                        <p>Advanced machine learning understands your business questions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="chat-container fade-in-up" style="animation-delay: 0.6s">
+                    <div id="chat-messages">
+                        <div class="message assistant-message">
+                            <div class="message-content">
+                                <i class="bi bi-robot me-2 text-primary"></i>
+                                <strong>AI Agent Ready!</strong> Ask me anything about your business data.
+                                <br><br>
+                                I can help you discover insights, analyze performance, and understand trends in your data.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Section -->
+                <div class="input-section fade-in-up" style="animation-delay: 0.7s">
+                    <form id="question-form">
+                        <div class="input-group">
+                            <input type="text" id="question-input" class="form-control" 
+                                   placeholder="Ask me anything about your e-commerce data..." required>
+                            <button class="btn btn-primary" type="submit" id="submit-btn">
+                                <i class="bi bi-send-fill me-2"></i>
+                                Ask AI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Example Questions -->
+                <div class="example-questions fade-in-up" style="animation-delay: 0.8s">
+                    <a href="#" class="example-btn" data-question="What is my total revenue?">
+                        <i class="bi bi-currency-dollar me-2"></i>
+                        Total Revenue
+                    </a>
+                    <a href="#" class="example-btn" data-question="Show me RoAS by product">
+                        <i class="bi bi-graph-up-arrow me-2"></i>
+                        Return on Ad Spend
+                    </a>
+                    <a href="#" class="example-btn" data-question="Which products have the highest conversion rate?">
+                        <i class="bi bi-trophy me-2"></i>
+                        Top Performers
+                    </a>
+                    <a href="#" class="example-btn" data-question="What percentage of products are eligible for advertising?">
+                        <i class="bi bi-pie-chart me-2"></i>
+                        Eligibility Stats
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="text-center mt-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">
+                <span class="loading-dots">Processing your question</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Floating Particles -->
+    <script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 15000);
+        }
+        
+        // Generate particles periodically
+        setInterval(createParticle, 3000);
+
+        // Mouse tracking for cursor effect
+        document.addEventListener('mousemove', (e) => {
+            document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+            
+            const cursor = document.body;
+            cursor.style.background = `
+                linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%),
+                radial-gradient(circle at ${e.clientX}px ${e.clientY}px, rgba(102, 126, 234, 0.03) 0%, transparent 150px)
+            `;
+        });
+        
+        class EcommerceAIAgent {
+            constructor() {
+                this.chatContainer = document.getElementById('chat-messages');
+                this.questionForm = document.getElementById('question-form');
+                this.questionInput = document.getElementById('question-input');
+                this.submitBtn = document.getElementById('submit-btn');
+                this.loading = document.getElementById('loading');
+                
+                this.init();
+            }
+            
+            init() {
+                this.questionForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.askQuestion();
+                });
+                
+                document.querySelectorAll('.example-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const question = e.target.closest('.example-btn').dataset.question;
+                        this.questionInput.value = question;
+                        this.askQuestion();
+                    });
+                });
+                
+                this.questionInput.focus();
+            }
+            
+            async askQuestion() {
+                const question = this.questionInput.value.trim();
+                if (!question) return;
+                
+                this.addMessage(question, 'user');
+                this.questionInput.value = '';
+                this.setLoading(true);
+                
+                try {
+                    const assistantMessageDiv = this.addMessage('', 'assistant');
+                    const messageContent = assistantMessageDiv.querySelector('.message-content');
+                    
+                    const response = await fetch('/ask', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({question})
+                    });
+                    
+                    const reader = response.body.getReader();
+                    let fullText = '';
+                    
+                    while (true) {
+                        const {done, value} = await reader.read();
+                        if (done) break;
+                        
+                        const chunk = new TextDecoder().decode(value);
+                        const lines = chunk.split('\n');
+                        
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const data = JSON.parse(line.slice(6));
+                                    
+                                    if (data.status) {
+                                        messageContent.innerHTML = `
+                                            <i class="bi bi-robot me-2 text-primary"></i>
+                                            ${data.status}
+                                            <span class="typing-indicator ms-2">
+                                                <div class="typing-dot"></div>
+                                                <div class="typing-dot"></div>
+                                                <div class="typing-dot"></div>
+                                            </span>
+                                        `;
+                                    } else if (data.partial_response) {
+                                        fullText = data.partial_response;
+                                        this.typeText(messageContent, fullText);
+                                    } else if (data.final_response) {
+                                        fullText = data.final_response.response;
+                                        this.typeText(messageContent, fullText);
+                                        if (data.final_response.chart) {
+                                            this.addChart(messageContent, data.final_response.chart);
+                                        }
+                                    } else if (data.text) {
+                                        fullText += data.text;
+                                        this.typeText(messageContent, fullText);
+                                    } else if (data.chart) {
+                                        this.addChart(messageContent, data.chart);
+                                    }
+                                } catch (e) {
+                                    console.error('Parse error:', e);
+                                }
+                            }
+                        }
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.addMessage('Sorry, there was an error processing your request.', 'assistant');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+            
+            addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+                
+                const icon = type === 'user' ? 
+                    '<i class="bi bi-person-fill me-2 text-light"></i>' :
+                    '<i class="bi bi-robot me-2 text-primary"></i>';
+                
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${icon}${text}
+                    </div>
+                `;
+                
+                this.chatContainer.appendChild(messageDiv);
+                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+                
+                return messageDiv;
+            }
+            
+            typeText(element, text) {
+                element.innerHTML = `<i class="bi bi-robot me-2 text-primary"></i>${text}`;
+                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
+            }
+            
+            addChart(element, chartData) {
+                const chartDiv = document.createElement('div');
+                chartDiv.style.width = '100%';
+                chartDiv.style.height = '400px';
+                chartDiv.style.marginTop = '1rem';
+                
+                element.appendChild(chartDiv);
+                Plotly.newPlot(chartDiv, chartData.data, chartData.layout, {responsive: true});
+            }
+            
+            setLoading(isLoading) {
+                this.loading.style.display = isLoading ? 'block' : 'none';
+                this.submitBtn.disabled = isLoading;
+                
+                if (isLoading) {
+                    this.submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+                } else {
+                    this.submitBtn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Ask AI';
+                }
+            }
+        }
+        
+        // Initialize when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new EcommerceAIAgent();
+        });
+    </script>
+</body>
+</html>

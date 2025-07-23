@@ -1,0 +1,22 @@
+eligibility_datetime_utc	item_id	eligibility	message		
+2025-06-04 8:50:07	29	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	270	TRUE			
+2025-06-04 8:50:07	31	TRUE			
+2025-06-04 8:50:07	26	TRUE			
+2025-06-04 8:50:07	25	TRUE			
+2025-06-04 8:50:07	34	TRUE			
+2025-06-04 8:50:07	28	TRUE			
+2025-06-04 8:50:07	32	TRUE			
+2025-06-04 8:50:07	33	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	27	TRUE			
+2025-06-04 8:50:07	23	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	24	TRUE			
+2025-06-04 8:50:07	35	TRUE			
+2025-06-04 8:50:07	30	TRUE			
+2025-06-04 8:50:07	36	TRUE			
+2025-06-04 8:50:07	19	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	15	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	16	TRUE			
+2025-06-04 8:50:07	18	FALSE	This product's cost to Amazon does not allow us to meet customers’ pricing expectations. Consider reducing the cost. It may take a few weeks for your product to become eligible to advertise after you reduce the cost.		
+2025-06-04 8:50:07	17	TRUE			
+2025-06-04 8:50:07	21	TRUE			
